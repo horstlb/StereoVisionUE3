@@ -1,4 +1,4 @@
-﻿// test.cpp : Definiert den Einstiegspunkt für die Konsolenanwendung.
+// test.cpp : Definiert den Einstiegspunkt f�r die Konsolenanwendung.
 
 //link to the filter_site: https://github.com/atilimcetin/guided-filter
 #include "stdafx.h"
@@ -147,18 +147,6 @@ void aggregateCostVolume(const cv::Mat &imgLeft, const cv::Mat &imgRight, std::v
 
 void refineDisparity(cv::Mat &dispLeft, cv::Mat &dispRight, int scaleDispFactor){
 
-/*	Compute the disparity map d′ from IR to IL.
-foreach pixel i in the left image do
-If |d(i) + d′(i + d(i))| > dLR, label the pixel i as occluded.
-Simple filling:
-foreach occluded pixel i do
-Find the two nearest neighbors (on the same line) that are not occluded.
-Adopt the higher (assuming left to right camera motion) disparity 
-Post-processing:
-Filter the left image by median filter 
-foreach occluded pixel i do
-Compute the bilateral filter weights on a neighborhood of i 
-Use these weights to compute a weighted median filter on the neighborhood of i`*/
 
 }
 
