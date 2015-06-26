@@ -159,7 +159,23 @@ Filter the left image by median filter
 foreach occluded pixel i do
 Compute the bilateral filter weights on a neighborhood of i 
 Use these weights to compute a weighted median filter on the neighborhood of i`*/
-
+	int dlr = 1;
+	Mat tempLeft(dispLeft.rows, dispLeft.cols, CV_32FC1);
+	for (int x=scaleDispFactor; x<(dispLeft.cols); ++x){		//for-loops for going through picture per pixel
+		for (int y=0; y<dispLeft.rows; ++y){
+			//tempLeft.at<uchar>(y,x)=0;
+			if(abs(dispLeft.at<uchar>(y,x)-dispRight.at<uchar>(y,x-scaleDispFactor))>dlr){ // nach links oder rechts kontrollieren???
+				dispLeft.at<uchar>(y,x)=1;  //labele tempLeft as occluded
+			}
+		}
+	}
+	for (int x=0; x<(dispLeft.cols-scaleDispFactor); ++x){		//for-loops for going through picture per pixel
+		for (int y=0; y<dispLeft.rows; ++y){
+			//if(tempLeft.at<uchar>(y,x)==1){
+			//	dispLeft.at<uchar>(y,x)=0;  //TODO: get neighbor and set it
+			//}
+		}
+	}
 }
 
 int main(){

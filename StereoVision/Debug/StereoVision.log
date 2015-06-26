@@ -1,4 +1,4 @@
-﻿Der Buildvorgang wurde am 26.06.2015 13:41:25 gestartet.
+﻿Der Buildvorgang wurde am 26.06.2015 15:22:53 gestartet.
 Projekt "H:\StereoVision\StereoVision.vcxproj" auf Knoten "2", build Ziel(e).
 InitializeBuildStatus:
   "Debug\StereoVision.unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
@@ -10,7 +10,7 @@ h:\stereovision\main.cpp(22): warning C4244: 'Initialisierung': Konvertierung vo
 h:\stereovision\main.cpp(112): warning C4018: '<': Konflikt zwischen 'signed' und 'unsigned'
 h:\stereovision\main.cpp(142): warning C4018: '<': Konflikt zwischen 'signed' und 'unsigned'
 ManifestResourceCompile:
-  C:\Programme\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\StereoVision.exe.embed.manifest.res" Debug\StereoVision_manifest.rc 
+  Alle Ausgaben sind aktuell.
 Link:
   C:\Programme\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"H:\Debug\StereoVision.exe" /INCREMENTAL /NOLOGO /LIBPATH:F:\opencv\build\x86\vc10\lib /LIBPATH:C:\Users\Vorschi\Downloads\opencv\build\x86\vc10\lib opencv_calib3d2410d.lib opencv_contrib2410d.lib opencv_core2410d.lib opencv_features2d2410d.lib opencv_flann2410d.lib opencv_gpu2410d.lib opencv_highgui2410d.lib opencv_imgproc2410d.lib opencv_legacy2410d.lib opencv_ml2410d.lib opencv_objdetect2410d.lib opencv_ts2410d.lib opencv_video2410d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\StereoVision.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"H:\Debug\StereoVision.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"H:\Debug\StereoVision.lib" /MACHINE:X86 Debug\StereoVision.exe.embed.manifest.res
   Debug\guidedfilter.obj
@@ -18,12 +18,9 @@ Link:
   Debug\main.obj
 Manifest:
   C:\Programme\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\StereoVision.exe.embed.manifest" /manifest Debug\StereoVision.exe.intermediate.manifest
-  C:\Programme\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\StereoVision.exe.embed.manifest.res" Debug\StereoVision_manifest.rc 
+  Alle Ausgaben sind aktuell.
 LinkEmbedManifest:
-  C:\Programme\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"H:\Debug\StereoVision.exe" /INCREMENTAL /NOLOGO /LIBPATH:F:\opencv\build\x86\vc10\lib /LIBPATH:C:\Users\Vorschi\Downloads\opencv\build\x86\vc10\lib opencv_calib3d2410d.lib opencv_contrib2410d.lib opencv_core2410d.lib opencv_features2d2410d.lib opencv_flann2410d.lib opencv_gpu2410d.lib opencv_highgui2410d.lib opencv_imgproc2410d.lib opencv_legacy2410d.lib opencv_ml2410d.lib opencv_objdetect2410d.lib opencv_ts2410d.lib opencv_video2410d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\StereoVision.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"H:\Debug\StereoVision.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"H:\Debug\StereoVision.lib" /MACHINE:X86 Debug\StereoVision.exe.embed.manifest.res
-  Debug\guidedfilter.obj
-  Debug\stdafx.obj
-  Debug\main.obj
+  Alle Ausgaben sind aktuell.
   StereoVision.vcxproj -> H:\Debug\StereoVision.exe
 FinalizeBuildStatus:
   Die Datei "Debug\StereoVision.unsuccessfulbuild" wird gelöscht.
@@ -32,4 +29,4 @@ Die Erstellung des Projekts "H:\StereoVision\StereoVision.vcxproj" ist abgeschlo
 
 Das Erstellen war erfolgreich.
 
-Verstrichene Zeit 00:00:05
+Verstrichene Zeit 00:00:03.99
