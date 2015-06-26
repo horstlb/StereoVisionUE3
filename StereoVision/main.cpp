@@ -145,6 +145,10 @@ void aggregateCostVolume(const cv::Mat &imgLeft, const cv::Mat &imgRight, std::v
 	}
 }
 
+void refineDisparity(cv::Mat &dispLeft, cv::Mat &dispRight, int scaleDispFactor){
+
+}
+
 int main(){
 	const Mat imgLeft = imread("tsukuba_left.png", CV_LOAD_IMAGE_UNCHANGED);		//reading the two original images
 	const Mat imgRight = imread("tsukuba_right.png", CV_LOAD_IMAGE_UNCHANGED);
@@ -174,6 +178,8 @@ int main(){
 	aggregateCostVolume(imgLeft, imgGrayRight, costVolumeLeft, costVolumeRight, r, eps);
 
 	selectDisparity(dispLeft, dispRight, costVolumeLeft, costVolumeRight, scaleDispFactor);
+
+	refineDisparity(dispLeft, dispRight, scaleDispFactor);
 
 	imshow("dispLeft",dispLeft);
 	imshow("dispRight",dispRight);
