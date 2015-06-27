@@ -185,20 +185,22 @@ Use these weights to compute a weighted median filter on the neighborhood of i`*
 				int tempLeft=256; //left Border
 				int tempRight=257; //right Border
 				for(int i=x; i>0; --i){
-					if(tempArr[y][x]==0){  //find next non-labeled pixel left
+					if(tempArr[y][i]==0){  //find next non-labeled pixel left
 						tempLeft = i;
 						i=0; //end for-loop
 					}
 				}
 				for(int i=x; i<dispLeft.cols; ++i){
-					if(tempArr[y][x]==0){ //find next non-labelde pixel right
+					if(tempArr[y][i]==0){ //find next non-labelde pixel right
 						tempRight = i;
 						i=dispLeft.cols; //end for-loop
 					}
 				}
 				if(tempLeft<tempRight){
+					if(tempLeft != 256)
 					dispLeft.at<uchar>(y,x)=dispLeft.at<uchar>(y,tempLeft);
 				}else{
+					if(tempRight!= 257)
 					dispLeft.at<uchar>(y,x)=dispLeft.at<uchar>(y,tempRight);
 				}
 			}//cout << tempArr[y][x] << " ";
