@@ -242,6 +242,11 @@ int main(){
 	refineDisparity(dispLeft, dispRight, scaleDispFactor);
 
 	imshow("dispLeftAfter",dispLeft);
+
+	Mat dispLeftMedian;
+	medianBlur(dispLeft,dispLeftMedian,5);
+
+	imshow("dispLeftAfterMedian",dispLeftMedian);
 	imshow("dispRight",dispRight);
 
 	waitKey(0);
