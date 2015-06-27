@@ -160,21 +160,50 @@ foreach occluded pixel i do
 Compute the bilateral filter weights on a neighborhood of i 
 Use these weights to compute a weighted median filter on the neighborhood of i`*/
 	int dlr = 1;
+	int** tempArr = new int*[dispLeft.rows];
+	for(int i=0; i< dispLeft.rows; ++i){
+		tempArr[i] = new int[dispLeft.cols];
+	}
 	Mat tempLeft(dispLeft.rows, dispLeft.cols, CV_32FC1);
-	for (int x=scaleDispFactor; x<(dispLeft.cols); ++x){		//for-loops for going through picture per pixel
+	for (int x=0; x<dispLeft.cols; ++x){		//for-loops for going through picture per pixel
 		for (int y=0; y<dispLeft.rows; ++y){
-			//tempLeft.at<uchar>(y,x)=0;
-			if(abs(dispLeft.at<uchar>(y,x)-dispRight.at<uchar>(y,x-scaleDispFactor))>dlr){ // nach links oder rechts kontrollieren???
-				dispLeft.at<uchar>(y,x)=1;  //labele tempLeft as occluded
+			if(x>=scaleDispFactor){
+				if(abs(dispLeft.at<uchar>(y,x)-dispRight.at<uchar>(y,x-scaleDispFactor))>dlr){ // nach links oder rechts kontrollieren??? -> so wird's ws nur für links funktionieren
+					tempArr[y][x]=1;  //label tempArr as occluded
+				}else{
+					tempArr[y][x]=0;
+				}
+			}else{
+				tempArr[y][x]=1;
 			}
 		}
 	}
-	for (int x=0; x<(dispLeft.cols-scaleDispFactor); ++x){		//for-loops for going through picture per pixel
+	for (int x=0; x<dispLeft.cols; ++x){		//for-loops for going through picture per pixel
 		for (int y=0; y<dispLeft.rows; ++y){
-			//if(tempLeft.at<uchar>(y,x)==1){
-			//	dispLeft.at<uchar>(y,x)=0;  //TODO: get neighbor and set it
-			//}
+			if(tempArr[y][x]==1){
+			//	dispLeft.at<uchar>(y,x)=0;  //TODO: find the nearest neighbor in the line and set it
+				int tempLeft=256; //left Border
+				int tempRight=257; //right Border
+				for(int i=x; i>0; --i){
+					if(tempArr[y][x]==0){  //find next non-labeled pixel left
+						tempLeft = i;
+						i=0; //end for-loop
+					}
+				}
+				for(int i=x; i<dispLeft.cols; ++i){
+					if(tempArr[y][x]==0){ //find next non-labelde pixel right
+						tempRight = i;
+						i=dispLeft.cols; //end for-loop
+					}
+				}
+				if(tempLeft<tempRight){
+					dispLeft.at<uchar>(y,x)=dispLeft.at<uchar>(y,tempLeft);
+				}else{
+					dispLeft.at<uchar>(y,x)=dispLeft.at<uchar>(y,tempRight);
+				}
+			}//cout << tempArr[y][x] << " ";
 		}
+		//cout << endl;
 	}
 }
 
@@ -207,10 +236,10 @@ int main(){
 	aggregateCostVolume(imgLeft, imgGrayRight, costVolumeLeft, costVolumeRight, r, eps);
 
 	selectDisparity(dispLeft, dispRight, costVolumeLeft, costVolumeRight, scaleDispFactor);
-
+	imshow("dispLeftBefore",dispLeft);
 	refineDisparity(dispLeft, dispRight, scaleDispFactor);
 
-	imshow("dispLeft",dispLeft);
+	imshow("dispLeftAfter",dispLeft);
 	imshow("dispRight",dispRight);
 
 	waitKey(0);
