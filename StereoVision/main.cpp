@@ -63,6 +63,14 @@ void computeCostVolume(const Mat &imgLeft, const Mat &imgRight, vector<Mat> &cos
 								costLeft+=abs(imgLeft.at<uchar>(b,a+i) - imgRight.at<uchar>(b,a));
 								normLeft++;
 							}
+							/*		right window from the right side
+							if((imgRight.cols-1-a+i<0)||(b<0)||(imgRight.cols-1-a+2*i>imgLeft.cols-1)||(b>imgLeft.rows-1))		//setting costVolume very high for out-of-image-windows
+								costRight+=255;
+
+							else{				//calculating costVolums
+								costRight+=abs(imgRight.at<uchar>(b,imgRight.cols-1-a+i) - imgLeft.at<uchar>(b,imgRight.cols-1-a+2*i));
+								normRight++;
+							}*/
 
 							if((a+i<0)||(b<0)||(a+2*i>imgLeft.cols-1)||(b>imgLeft.rows-1))		//setting costVolume very high for out-of-image-windows
 								costRight+=255;
@@ -74,7 +82,13 @@ void computeCostVolume(const Mat &imgLeft, const Mat &imgRight, vector<Mat> &cos
 						}		
 					}
 
-					
+					if (normRight==0)
+						normRight=1;
+					if (normLeft==0)
+						normLeft=1;
+
+					costLeft = costLeft/normLeft;
+					costRight = costRight/normRight;
 
 					tempLeft.at<float>(y,x) = costLeft;			//write cost volume in temporary matrix and reset it
 					tempRight.at<float>(y,x) = costRight;
@@ -205,7 +219,7 @@ void aggregateCostVolume(const cv::Mat &imgLeft, const cv::Mat &imgRight, std::v
 	eps *= 255*255;
 	for (int i = 0; i<costVolumeLeft.size(); i++){
 		costVolumeLeft.at(i) = guidedFilter(imgLeft, costVolumeLeft.at(i), r, eps);
-		costVolumeRight.at(i) = guidedFilter(imgRight, costVolumeRight.at(i), r, eps);
+		costVolumeRight.at(i) = guidedFilter(imgRight, costVolumeRight.at(i), r/4, eps);
 	}
 }
 
@@ -302,7 +316,7 @@ int main(){
 	vector<Mat> costVolumeLeft;			//vectors for storing the different cost volumes for each disparity
 	vector<Mat> costVolumeRight;
 	
-	int windowSize = 7;			//scanning window size
+	int windowSize = 5;			//scanning window size
 	int maxDisp = 15;			//definition of the maximum disparity
 	int scaleDispFactor = 16;		//stretches the disparity levels for better visualization
 
@@ -313,8 +327,8 @@ int main(){
 	Mat imgGrayLeft(imgLeft.rows, imgLeft.cols, CV_8UC1);			//computing the grayscale images				
 	Mat imgGrayRight(imgRight.rows, imgRight.cols, CV_8UC1);
 
-	int r = 32;
-	double eps = 0.00001;
+	int r = 10;
+	double eps = 0.0000001;
 
 	convertToGrayscale(imgLeft, imgGrayLeft);
 	convertToGrayscale(imgRight, imgGrayRight);
@@ -324,23 +338,14 @@ int main(){
 	aggregateCostVolume(imgLeft, imgGrayRight, costVolumeLeft, costVolumeRight, r, eps);
 
 	selectDisparity(dispLeft, dispRight, costVolumeLeft, costVolumeRight, scaleDispFactor);
-	imshow("dispLeftBefore",dispLeft);
-	imshow("dispRightBefore", dispRight);
 
 	refineDisparity(dispLeft, dispRight, scaleDispFactor);
 
-	imshow("dispLeftAfter",dispLeft);
-	imshow("dispRightAfter",dispRight);
-
 	Mat dispLeftMedian;
-	medianBlur(dispLeft,dispLeftMedian,5);
+	medianBlur(dispRight,dispLeftMedian,3);
 
-	Mat dispRightMedian;
-	medianBlur(dispRight,dispRightMedian,5);
-
-	imshow("dispLeftAfterMedian",dispLeftMedian);
-	imshow("dispRightAfterMedian",dispRightMedian);
-
+	imshow("dispLeftAfter",dispLeftMedian);
+	
 	waitKey(0);
 	return 0;
 }
