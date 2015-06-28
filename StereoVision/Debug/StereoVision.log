@@ -1,4 +1,4 @@
-﻿Der Buildvorgang wurde am 28.06.2015 19:48:47 gestartet.
+﻿Der Buildvorgang wurde am 28.06.2015 20:13:04 gestartet.
 Projekt "H:\StereoVision\StereoVision.vcxproj" auf Knoten "2", build Ziel(e).
 InitializeBuildStatus:
   "Debug\StereoVision.unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
@@ -31,4 +31,4 @@ Die Erstellung des Projekts "H:\StereoVision\StereoVision.vcxproj" ist abgeschlo
 
 Das Erstellen war erfolgreich.
 
-Verstrichene Zeit 00:00:02.39
+Verstrichene Zeit 00:00:04.60

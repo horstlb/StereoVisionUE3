@@ -225,18 +225,6 @@ void aggregateCostVolume(const cv::Mat &imgLeft, const cv::Mat &imgRight, std::v
 
 void refineDisparity(cv::Mat &dispLeft, cv::Mat &dispRight, int scaleDispFactor){
 
-/*	Compute the disparity map d′ from IR to IL.
-foreach pixel i in the left image do
-If |d(i) + d′(i + d(i))| > dLR, label the pixel i as occluded.
-Simple filling:
-foreach occluded pixel i do
-Find the two nearest neighbors (on the same line) that are not occluded.
-Adopt the higher (assuming left to right camera motion) disparity 
-Post-processing:
-Filter the left image by median filter 
-foreach occluded pixel i do
-Compute the bilateral filter weights on a neighborhood of i 
-Use these weights to compute a weighted median filter on the neighborhood of i`*/
 	int dlr = 1;
 	int** tempArr = new int*[dispLeft.rows];
 	int** tempArrRight = new int*[dispLeft.rows];
@@ -244,35 +232,35 @@ Use these weights to compute a weighted median filter on the neighborhood of i`*
 		tempArr[i] = new int[dispLeft.cols];
 		tempArrRight[i] = new int[dispLeft.cols];
 	}
-	//Mat tempLeft(dispLeft.rows, dispLeft.cols, CV_32FC1);
-	//	Mat tempLeft(dispLeft.rows, dispLeft.cols, CV_32FC1);
+
 	for (int x=0; x<dispLeft.cols; ++x){		//for-loops for going through picture per pixel
 		for (int y=0; y<dispLeft.rows; ++y){
 			if(x>=scaleDispFactor){
-				if(abs(dispLeft.at<uchar>(y,x)-dispRight.at<uchar>(y,x-scaleDispFactor))>dlr){ // nach links oder rechts kontrollieren??? -> so wird's ws nur für links funktionieren
-					tempArr[y][x]=1;  //label tempArr as occluded
+				if(abs(dispLeft.at<uchar>(y,x)-dispRight.at<uchar>(y,x-scaleDispFactor))>dlr){ //consistency check
+					tempArr[y][x]=1;  //label pixel as inconsistent
 				}else{
 					tempArr[y][x]=0;
 				}
 			}else{
-				tempArr[y][x]=1;
+				tempArr[y][x]=1;  //the pixels at the left are set as inconsistent
 			}
+
 			if(x+scaleDispFactor < dispRight.cols){
-				if(abs(dispRight.at<uchar>(y,x)-dispLeft.at<uchar>(y,x+scaleDispFactor))>dlr){ // nach links oder rechts kontrollieren??? -> so wird's ws nur für links funktionieren
-					tempArrRight[y][x]=1;  //label tempArr as occluded
+				if(abs(dispRight.at<uchar>(y,x)-dispLeft.at<uchar>(y,x+scaleDispFactor))>dlr){ //consistency check
+					tempArrRight[y][x]=1;  //label pixel as inconsistent
 				}else{
 					tempArrRight[y][x]=0;
 				}
 			}else{
-				tempArrRight[y][x]=1;
+				tempArrRight[y][x]=1; //the pixels at the right are set as inconsistent
 			}
 		}
 	}
 	for (int x=0; x<dispLeft.cols; ++x){		//for-loops for going through picture per pixel
 		for (int y=0; y<dispLeft.rows; ++y){
 			if(tempArr[y][x]==1){
-				int tempLeft=256; //left Border
-				int tempRight=257; //right Border
+				int tempLeft=256;		//left Border
+				int tempRight=257;		//right Border
 				for(int i=x; i>0; --i){
 					if(tempArr[y][i]==0){  //find next non-labeled pixel left
 						tempLeft = i;
@@ -287,16 +275,16 @@ Use these weights to compute a weighted median filter on the neighborhood of i`*
 				}
 				if(tempLeft<tempRight){
 					if(tempLeft != 256)
-					dispLeft.at<uchar>(y,x)=dispLeft.at<uchar>(y,tempLeft);
+					dispLeft.at<uchar>(y,x)=dispLeft.at<uchar>(y,tempLeft); //set nearest consistent pixel
 				}else{
 					if(tempRight!= 257)
-					dispLeft.at<uchar>(y,x)=dispLeft.at<uchar>(y,tempRight);
+					dispLeft.at<uchar>(y,x)=dispLeft.at<uchar>(y,tempRight); //set nearest consistent pixel
 				}
 			}
 
 			if(tempArrRight[y][x]==1){
-				int tempLeft=256; //left Border
-				int tempRight=257; //right Border
+				int tempLeft=256;		//left Border
+				int tempRight=257;		//right Border
 				for(int i=x; i>0; --i){
 					if(tempArrRight[y][i]==0){  //find next non-labeled pixel left
 						tempLeft = i;
@@ -311,14 +299,13 @@ Use these weights to compute a weighted median filter on the neighborhood of i`*
 				}
 				if(tempLeft<tempRight){
 					if(tempLeft != 256)
-					dispRight.at<uchar>(y,x)=dispRight.at<uchar>(y,tempLeft);
+					dispRight.at<uchar>(y,x)=dispRight.at<uchar>(y,tempLeft);	//set nearest consistent pixel
 				}else{
 					if(tempRight!= 257)
-					dispRight.at<uchar>(y,x)=dispRight.at<uchar>(y,tempRight);
+					dispRight.at<uchar>(y,x)=dispRight.at<uchar>(y,tempRight);	//set nearest consistent pixel
 				}
 			}
 		}
-		
 	}
 }
 
