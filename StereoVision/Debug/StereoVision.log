@@ -1,4 +1,4 @@
-﻿Der Buildvorgang wurde am 27.06.2015 11:16:58 gestartet.
+﻿Der Buildvorgang wurde am 27.06.2015 13:52:38 gestartet.
      1>Projekt "C:\Users\Vorschi\Documents\GitHub\StereoVisionUE3\StereoVision\StereoVision.vcxproj" auf Knoten "2", build Ziel(e).
      1>InitializeBuildStatus:
          "Debug\StereoVision.unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
@@ -7,11 +7,10 @@
          C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /IF:\opencv\build\include /IC:\Users\Vorschi\Downloads\opencv\build\include /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
          main.cpp
      1>c:\users\vorschi\documents\github\stereovisionue3\stereovision\main.cpp(23): warning C4244: 'Initialisierung': Konvertierung von 'double' in 'uchar', möglicher Datenverlust
-     1>c:\users\vorschi\documents\github\stereovisionue3\stereovision\main.cpp(99): warning C4244: '=': Konvertierung von 'int' in 'float', möglicher Datenverlust
-     1>c:\users\vorschi\documents\github\stereovisionue3\stereovision\main.cpp(100): warning C4244: '=': Konvertierung von 'int' in 'float', möglicher Datenverlust
-     1>c:\users\vorschi\documents\github\stereovisionue3\stereovision\main.cpp(34): warning C4101: 'a': Unreferenzierte lokale Variable
-     1>c:\users\vorschi\documents\github\stereovisionue3\stereovision\main.cpp(195): warning C4018: '<': Konflikt zwischen 'signed' und 'unsigned'
-     1>c:\users\vorschi\documents\github\stereovisionue3\stereovision\main.cpp(225): warning C4018: '<': Konflikt zwischen 'signed' und 'unsigned'
+     1>c:\users\vorschi\documents\github\stereovisionue3\stereovision\main.cpp(93): warning C4244: '=': Konvertierung von 'int' in 'float', möglicher Datenverlust
+     1>c:\users\vorschi\documents\github\stereovisionue3\stereovision\main.cpp(94): warning C4244: '=': Konvertierung von 'int' in 'float', möglicher Datenverlust
+     1>c:\users\vorschi\documents\github\stereovisionue3\stereovision\main.cpp(190): warning C4018: '<': Konflikt zwischen 'signed' und 'unsigned'
+     1>c:\users\vorschi\documents\github\stereovisionue3\stereovision\main.cpp(220): warning C4018: '<': Konflikt zwischen 'signed' und 'unsigned'
        ManifestResourceCompile:
          Alle Ausgaben sind aktuell.
        Link:
@@ -32,4 +31,4 @@
 
 Das Erstellen war erfolgreich.
 
-Verstrichene Zeit 00:00:01.77
+Verstrichene Zeit 00:00:01.71

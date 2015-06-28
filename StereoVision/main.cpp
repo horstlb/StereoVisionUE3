@@ -29,10 +29,10 @@ void convertToGrayscale(const Mat &img, Mat &imgGray){
 
 void computeCostVolume(const Mat &imgLeft, const Mat &imgRight, vector<Mat> &costVolumeLeft, 
 	vector<Mat> &costVolumeRight, int windowSize, int maxDisp){
-		
+	
 	Mat tempLeft(imgLeft.rows, imgLeft.cols, CV_32FC1);		//matrices for storing cost volume temporarily
-	int a;
 	Mat tempRight(imgRight.rows, imgRight.cols, CV_32FC1);
+
 	int costLeft = 0;
 	int costRight = 0;
 
@@ -65,7 +65,7 @@ void computeCostVolume(const Mat &imgLeft, const Mat &imgRight, vector<Mat> &cos
 						//if((x>i)&&(y>windowSize/2)&&((y+windowSize/2)<imgRight.rows)&&((x+windowSize/2)<imgRight.cols)){			//handling boundary problems right
 							if(((x-a)>0)&&((x-a)<imgLeft.cols)&&((y-b)>0)&&((y-b)<imgLeft.rows)){
 								
-							if((x-a+i)>=imgLeft.cols){		//setting costVolume very high for out-of-image-windows
+								if((x-a+i)>=imgLeft.cols){		//setting costVolume very high for out-of-image-windows
 									costRight+=1000;
 								}
 								else{				//calculating costVolums
@@ -88,13 +88,7 @@ void computeCostVolume(const Mat &imgLeft, const Mat &imgRight, vector<Mat> &cos
 				costLeft = costLeft / normLeft;		//normalizing cost volume
 				costRight = costRight / normRight;
 
-				if(costLeft>255 || costLeft==0){
-					costLeft=255;
-				}
-
-				if (costRight>255 ||costRight==0){
-					costRight=255;
-				}
+				
 				
 				tempLeft.at<float>(y,x) = costLeft;			//write cost volume in temporary matrix and reset it
 				tempRight.at<float>(y,x) = costRight;
@@ -112,7 +106,8 @@ void computeCostVolume(const Mat &imgLeft, const Mat &imgRight, vector<Mat> &cos
 		tempLeft = temp2;
 		tempRight = temp3;
 	}
-	/*int borderSize = windowSize/2;
+	/*
+	int borderSize = windowSize/2;
 	float costLeft = 0;
 	float costRight = 0;
 	float leftRight = 0;
@@ -156,9 +151,11 @@ void computeCostVolume(const Mat &imgLeft, const Mat &imgRight, vector<Mat> &cos
 					costLeft = tempLeft.at<float>(i,j-1)-leftLeft+leftRight;		//compute sliding window
 					costRight = tempRight.at<float>(i,j-1)-rightLeft+rightRight;
 				}
-				else
+				else{
 					costLeft = 255;
-
+					costRight = 255;
+				}
+					
 				tempLeft.at<float>(i,j) = costLeft;			//storing costVolume
 				tempRight.at<float>(i,j) = costRight;
 				costLeft=0;
@@ -172,9 +169,7 @@ void computeCostVolume(const Mat &imgLeft, const Mat &imgRight, vector<Mat> &cos
 		tempLeft=temp2;
 		tempRight=temp3;
 	}
-	
 	*/
-
 }
 
 void selectDisparity(Mat &dispLeft, Mat &dispRight, vector<Mat> &costVolumeLeft, 
@@ -310,8 +305,8 @@ int main(){
 	Mat imgGrayLeft(imgLeft.rows, imgLeft.cols, CV_8UC1);			//computing the grayscale images				
 	Mat imgGrayRight(imgRight.rows, imgRight.cols, CV_8UC1);
 
-	int r = 2; // try r=2, 4, or 8
-	double eps = 0.1 * 0.1; // try eps=0.1^2, 0.2^2, 0.4^2
+	int r = 18;
+	double eps = 0.001;
 
 	convertToGrayscale(imgLeft, imgGrayLeft);
 	convertToGrayscale(imgRight, imgGrayRight);
@@ -322,9 +317,11 @@ int main(){
 
 	selectDisparity(dispLeft, dispRight, costVolumeLeft, costVolumeRight, scaleDispFactor);
 	imshow("dispLeftBefore",dispLeft);
-	refineDisparity(dispLeft, dispRight, scaleDispFactor);
+	imshow("dispRightBefore", dispRight);
 
-	imshow("dispLeftAfter",dispLeft);
+	//refineDisparity(dispLeft, dispRight, scaleDispFactor);
+
+	//imshow("dispLeftAfter",dispLeft);
 
 	//Mat dispLeftMedian;
 	//medianBlur(dispLeft,dispLeftMedian,5);
