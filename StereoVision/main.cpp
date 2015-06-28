@@ -239,10 +239,13 @@ Compute the bilateral filter weights on a neighborhood of i
 Use these weights to compute a weighted median filter on the neighborhood of i`*/
 	int dlr = 1;
 	int** tempArr = new int*[dispLeft.rows];
+	int** tempArrRight = new int*[dispLeft.rows];
 	for(int i=0; i< dispLeft.rows; ++i){
 		tempArr[i] = new int[dispLeft.cols];
+		tempArrRight[i] = new int[dispLeft.cols];
 	}
-	Mat tempLeft(dispLeft.rows, dispLeft.cols, CV_32FC1);
+	//Mat tempLeft(dispLeft.rows, dispLeft.cols, CV_32FC1);
+	//	Mat tempLeft(dispLeft.rows, dispLeft.cols, CV_32FC1);
 	for (int x=0; x<dispLeft.cols; ++x){		//for-loops for going through picture per pixel
 		for (int y=0; y<dispLeft.rows; ++y){
 			if(x>=scaleDispFactor){
@@ -254,12 +257,20 @@ Use these weights to compute a weighted median filter on the neighborhood of i`*
 			}else{
 				tempArr[y][x]=1;
 			}
+			if(x+scaleDispFactor < dispRight.cols){
+				if(abs(dispRight.at<uchar>(y,x)-dispLeft.at<uchar>(y,x+scaleDispFactor))>dlr){ // nach links oder rechts kontrollieren??? -> so wird's ws nur für links funktionieren
+					tempArrRight[y][x]=1;  //label tempArr as occluded
+				}else{
+					tempArrRight[y][x]=0;
+				}
+			}else{
+				tempArrRight[y][x]=1;
+			}
 		}
 	}
 	for (int x=0; x<dispLeft.cols; ++x){		//for-loops for going through picture per pixel
 		for (int y=0; y<dispLeft.rows; ++y){
 			if(tempArr[y][x]==1){
-			//	dispLeft.at<uchar>(y,x)=0;  //TODO: find the nearest neighbor in the line and set it
 				int tempLeft=256; //left Border
 				int tempRight=257; //right Border
 				for(int i=x; i>0; --i){
@@ -281,9 +292,33 @@ Use these weights to compute a weighted median filter on the neighborhood of i`*
 					if(tempRight!= 257)
 					dispLeft.at<uchar>(y,x)=dispLeft.at<uchar>(y,tempRight);
 				}
-			}//cout << tempArr[y][x] << " ";
+			}
+
+			if(tempArrRight[y][x]==1){
+				int tempLeft=256; //left Border
+				int tempRight=257; //right Border
+				for(int i=x; i>0; --i){
+					if(tempArrRight[y][i]==0){  //find next non-labeled pixel left
+						tempLeft = i;
+						i=0; //end for-loop
+					}
+				}
+				for(int i=x; i<dispLeft.cols; ++i){
+					if(tempArrRight[y][i]==0){ //find next non-labelde pixel right
+						tempRight = i;
+						i=dispLeft.cols; //end for-loop
+					}
+				}
+				if(tempLeft<tempRight){
+					if(tempLeft != 256)
+					dispRight.at<uchar>(y,x)=dispRight.at<uchar>(y,tempLeft);
+				}else{
+					if(tempRight!= 257)
+					dispRight.at<uchar>(y,x)=dispRight.at<uchar>(y,tempRight);
+				}
+			}
 		}
-		//cout << endl;
+		
 	}
 }
 
@@ -319,15 +354,19 @@ int main(){
 	imshow("dispLeftBefore",dispLeft);
 	imshow("dispRightBefore", dispRight);
 
-	//refineDisparity(dispLeft, dispRight, scaleDispFactor);
+	refineDisparity(dispLeft, dispRight, scaleDispFactor);
 
-	//imshow("dispLeftAfter",dispLeft);
+	imshow("dispLeftAfter",dispLeft);
+	imshow("dispRightAfter",dispRight);
 
-	//Mat dispLeftMedian;
-	//medianBlur(dispLeft,dispLeftMedian,5);
+	Mat dispLeftMedian;
+	medianBlur(dispLeft,dispLeftMedian,5);
 
-	//imshow("dispLeftAfterMedian",dispLeftMedian);
-//	imshow("dispRight",dispRight);
+	Mat dispRightMedian;
+	medianBlur(dispRight,dispRightMedian,5);
+
+	imshow("dispLeftAfterMedian",dispLeftMedian);
+	imshow("dispRightAfterMedian",dispRightMedian);
 
 	waitKey(0);
 	return 0;
